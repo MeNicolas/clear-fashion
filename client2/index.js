@@ -18,6 +18,9 @@ console.table(MY_FAVORITE_BRANDS);
 console.log(MY_FAVORITE_BRANDS[0]);
 
 
+
+
+
 /**
  * 🌱
  * Let's go with a very very simple first todo
@@ -31,8 +34,9 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // I can find on these e-shops
 // 2. Log the variable
 
-const MY_Cheapest = 'https://hopaal.com/collections/t-shirts-homme/products/pocket-navy-t-shirt-homme';
-console.log(MY_Cheapest);
+
+
+
 
 /**
  * 👕
@@ -46,47 +50,36 @@ console.log(MY_Cheapest);
 // 🎯 TODO: Number of products
 // 1. Create a variable and assign it the number of products
 // 2. Log the variable
-const Number_of_product = marketplace.length;
-console.log(Number_of_product);
+
 
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
 // 2. Log the variable
 // 3. Log how many brands we have
 
-const Brands_name =  marketplace.map(product => product.brand);
-console.log(Brands_name);
 
 // 🎯 TODO: Sort by price
 // 1. Create a function to sort the marketplace products by price
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
 
-const Products_sorted_price = marketplace.sort((a, b) => a.price - b.price);
-console.table(Products_sorted_price)
 
 // 🎯 TODO: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
 // 2. Create a variable and assign it the list of products by date from recent to old
 // 3. Log the variable
 
-const Products_sorted_date = marketplace.sort((a, b) => a.date < b.date ? -1 : 1);
-console.table(Products_sorted_date)
 
 // 🎯 TODO: Filter a specific price range
 // 1. Filter the list of products between 50€ and 100€
 // 2. Log the list
-
-const Products_filtered_range = marketplace.filter(p => p.price >= 50 && p.price <= 100);
-console.table(Products_filtered_range)
 
 
 // 🎯 TODO: Average Basket
 // 1. Determine the average basket of the marketplace
 // 2. Log the average
 
-const Average = marketplace.reduce((sum, p) => sum += p.price, 0) / marketplace.length
-console.log("Average basket: " + Average)
+
 
 
 
@@ -113,34 +106,18 @@ console.log("Average basket: " + Average)
 // 2. Log the variable
 // 3. Log the number of products by brands
 
-const brands = marketplace.reduce((brands, p) => {
-  const brand = (brands[p.brand] || []);
-  brand.push(p);
-  brands[p.brand] = brand;
-  return brands;
-}, {});
-console.log(brands);
 
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
-
-for (let i in brands) {
-  brands[i].sort((a, b) => a.price - b.price)
-}
-
-console.log(brands)
 
 
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
 
-for (let i in brands) {
-  brands[i].sort((a, b) => a.date < b.price ? -1 : 1)
-}
 
-console.log(brands)
+
 
 
 /**
@@ -154,36 +131,9 @@ console.log(brands)
 // 1. Compute the p90 price value of each brand
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
 
-const asc = arr => arr.sort((a, b) => a - b);
 
-const sum = arr => arr.reduce((a, b) => a + b, 0);
 
-const mean = arr => sum(arr) / arr.length;
 
-const std = (arr) => {
-    const mu = mean(arr);
-    const diffArr = arr.map(a => (a - mu) ** 2);
-    return Math.sqrt(sum(diffArr) / (arr.length - 1));
-};
-
-const quantile = (arr, q) => {
-    const sorted = asc(arr);
-    const pos = (sorted.length - 1) * q;
-    const base = Math.floor(pos);
-    const rest = pos - base;
-    if (sorted[base + 1] !== undefined) {
-        return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
-    } else {
-        return sorted[base];
-    }
-};
-
-const brands_p90 = Object.fromEntries(
-  Object.entries(brands).map(
-    ([brand, products], _) => [brand, quantile(products.map(p => p.price), 0.9)]
-  )
-)
-console.log("p90 values", brands_p90)
 
 /**
  * 🧥
@@ -257,31 +207,20 @@ const COTELE_PARIS = [
 // // 1. Log if we have new products only (true or false)
 // // A new product is a product `released` less than 2 weeks.
 
-const new_releases = COTELE_PARIS.filter(p => 
-  Date.now() - new Date(p.released).getTime() < 14 * 24 * 3600 * 1000
-)
-console.table(new_releases)
 
 // 🎯 TODO: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
 // // A reasonable price if all the products are less than 100€
 
-const reasonable = COTELE_PARIS.reduce((res, p) => res && p.price <= 100, true)
-console.log('Reasonable price', reasonable)
 
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the product
 
-const product = COTELE_PARIS.filter(p => p.uuid == 'b56c6d88-749a-5b4c-b571-e5b5c6483131')[0]
-console.log('Found product', product)
 
 // 🎯 TODO: Delete a specific product
 // 1. Delete the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the new list of product
-
-COTELE_PARIS.splice(COTELE_PARIS.findIndex(p => p.uuid == 'b56c6d88-749a-5b4c-b571-e5b5c6483131'), 1)
-console.table(COTELE_PARIS)
 
 // 🎯 TODO: Save the favorite product
 let blueJacket = {
@@ -304,14 +243,10 @@ blueJacket = {
   'uuid': 'b4b05398-fee0-4b31-90fe-a794d2ccfaaa'
 };
 
-console.log(jacket, blueJacket)
-
 // 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
 
-// It did not also changed blueJacket but it should have had. We need to make a full copy of blueJacket to make them independent.
 
-jacket = Object.assign({}, blueJacket)
-jacket.favorite = true
+
 
 
 /**
@@ -323,5 +258,3 @@ jacket.favorite = true
 // 🎯 TODO: Save in localStorage
 // 1. Save MY_FAVORITE_BRANDS in the localStorage
 // 2. log the localStorage
-window.localStorage.setItem('MY_FAVORITE_BRANDS', JSON.stringify(MY_FAVORITE_BRANDS))
-console.log(JSON.parse(window.localStorage.getItem('MY_FAVORITE_BRANDS')))

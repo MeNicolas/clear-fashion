@@ -1,11 +1,19 @@
 /* eslint-disable no-console, no-process-exit */
 const dedicatedbrand = require('./sources/dedicatedbrand');
+const mudjeans = require('./sources/mudjeans');
+const adresseparis = require('./sources/adresseparis');
 
-async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
+async function sandbox (eshop = 'https://adresse.paris/602-nouveautes') {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
 
-    const products = await dedicatedbrand.scrape(eshop);
+    let products
+    if (eshop.includes('dedicated'))
+      products = await dedicatedbrand.scrape(eshop);
+    else if (eshop.includes('mudjeans'))
+      products = await mudjeans.scrape(eshop);
+    else if (eshop.includes('adresse'))
+      products = await adresseparis.scrape(eshop);
 
     console.log(products);
     console.log('done');
