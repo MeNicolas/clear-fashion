@@ -9,20 +9,34 @@ const cheerio = require('cheerio');
 const parse = data => {
   const $ = cheerio.load(data);
 
-  return $('.productList-container .productList')
+  return $('.collection-products div:first-child > .col')
     .map((i, element) => {
       const name = $(element)
-        .find('.productList-title')
+        .find('.product-title')
         .text()
         .trim()
         .replace(/\s/g, ' ');
       const price = parseInt(
         $(element)
-          .find('.productList-price')
+          .find('.product-price:first-child')
           .text()
+          .trim()
+          .replace('Buy€', '')
       );
+      const url = 'https://mudjeans.eu' + 
+        $(element)
+          .find('.product-link').find('a')
+          .attr('href')
+          .trim()
+          .replace(/\s/g, ' ');   
+      const image = 'https:' + 
+        $(element)
+          .find('.primary-image').find('img')
+          .attr('src')
+          .trim()
+          .replace(/\s/g, ' ');
 
-      return {name, price};
+      return {brand: 'mudjeans', name, price, url, image};
     })
     .get();
 };

@@ -11,9 +11,11 @@ const parse = data => {
 
   return $('.product_list .product-container')
     .map((i, element) => {
+      if ($(element).find('.product-name').length == 0) return null
+      
       const name = $(element)
-        .find('.product-name')
-        .attr('title')
+        .find('.product-name:first')
+        .text()
         .trim()
         .replace(/\s/g, ' ');
       const price = parseInt(
@@ -23,9 +25,20 @@ const parse = data => {
           .trim()
           .replace('Buy€', '')
       );
+      const url = $(element)
+        .find('.product-name:first')
+        .attr('href')
+        .trim()
+        .replace(/\s/g, ' ');
+      const image = $(element)
+        .find('.product_img_link').find('img:first')
+        .attr('data-original')
+        .trim()
+        .replace(/\s/g, ' ');
 
-      return {name, price};
+      return {brand: 'adresseparis', name, price, url, image};
     })
+    .filter(Boolean)
     .get();
 };
 

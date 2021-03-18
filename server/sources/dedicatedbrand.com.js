@@ -9,22 +9,31 @@ const cheerio = require('cheerio');
 const parse = data => {
   const $ = cheerio.load(data);
 
-  return $('.collection-products div:first-child > .col')
+  return $('.productList-container .productList')
     .map((i, element) => {
       const name = $(element)
-        .find('.product-title')
+        .find('.productList-title')
         .text()
         .trim()
         .replace(/\s/g, ' ');
       const price = parseInt(
         $(element)
-          .find('.product-price:first-child')
+          .find('.productList-price')
           .text()
-          .trim()
-          .replace('Buy€', '')
       );
+      const url = 'https://www.dedicatedbrand.com' + 
+        $(element)
+          .find('.productList-link')
+          .attr('href')
+          .trim()
+          .replace(/\s/g, ' ');
+      const image = $(element)
+          .find('.productList-image').find('img:first')
+          .attr('src')
+          .trim()
+          .replace(/\s/g, ' ');
 
-      return {name, price};
+      return {brand: 'dedicatedbrand', name, price, url, image};
     })
     .get();
 };
