@@ -1,5 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const {'v5': uuidv5} = require('uuid');
 
 /**
  * Parse webpage e-shop
@@ -23,20 +24,21 @@ const parse = data => {
           .trim()
           .replace('Buy€', '')
       );
-      const url = 'https://mudjeans.eu' + 
+      const link = 'https://mudjeans.eu' + 
         $(element)
           .find('.product-link').find('a')
           .attr('href')
           .trim()
           .replace(/\s/g, ' ');   
-      const image = 'https:' + 
+      const photo = 'https:' + 
         $(element)
           .find('.primary-image').find('img')
           .attr('src')
           .trim()
           .replace(/\s/g, ' ');
-
-      return {brand: 'mudjeans', name, price, url, image};
+      const _id =  uuidv5(link, uuidv5.URL)
+      
+      return {_id, brand: 'mudjeans', name, price, link, photo};
     })
     .get();
 };
