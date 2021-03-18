@@ -26,8 +26,11 @@ app.get('/product/:id', async (req, res) => {
 
 app.get('/products/search/', async (req, res) => {
 	const limit = parseInt(req.query.limit) || 12
+	const page = parseInt(req.query.page) || 1
 	const brand = req.query.brand
 	const price = parseInt(req.query.price)
+	
+	const offset = (page - 1) * limit
 	
 	const collection = await db.collection()
 	
@@ -35,7 +38,7 @@ app.get('/products/search/', async (req, res) => {
 	if (brand) query.brand = brand
 	if (price) query.price = {'$lt': price}
 	
-	const result = await collection.find(query).limit(limit).toArray();
+	const result = await collection.find(query).limit(limit).skip(offset).toArray();
 	
 	res.send(result)
 });
